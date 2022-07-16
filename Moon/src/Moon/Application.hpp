@@ -10,6 +10,7 @@ namespace Moon
 		virtual void OnStart() {};
 		virtual void OnUpdate() {};
 		void Run();
+		void Close();
 	};
 
 	Application* CreateApplication();

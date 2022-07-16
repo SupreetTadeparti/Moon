@@ -1,15 +1,38 @@
 #pragma once
+
 #include "Core.h"
 
 namespace Moon
 {
-	class MOON_API Window
+	class Window
 	{
 	public:
-		static void Create(uint32_t width=640, uint32_t height=360, const std::string& title="Moon Application");
-		static void Run();
-		static void Update();
+		MOON_API static Int Init();
+		MOON_API static Int Create();
+		MOON_API static void Close();
+		MOON_API static void Update();
+
+		MOON_API static inline Uint GetWidth() { return s_Width; }
+		MOON_API static inline Uint GetHeight() { return s_Height; }
+
+		//   -------------------------------------
+		//   |  To be used by Moon Applications  |
+		//   -------------------------------------
+
+		MOON_API static void SetBackgroundColor(Float r, Float g, Float b);
+		MOON_API static void SetTitle(const String& title);
+		MOON_API static void SetDimensions(Uint width, Uint height);
 	private:
-		//GLFWwindow* s_Window;
+		MOON_API static const Char* Window::GetKeyName(Int key);
+		MOON_API static void KeyCallback(GLFWwindow*, Int, Int, Int, Int);
+		MOON_API static void MessageCallback(Uint source, Uint type, Uint id,
+			Uint severity, Int length,
+			const Char* msg, const void* data);
+
+		static GLFWwindow* s_Window;
+		static Uint s_Width;
+		static Uint s_Height;
+		static String s_Title;
+		static Vec3 s_BackgroundColor;
 	};
 }

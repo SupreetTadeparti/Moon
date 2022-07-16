@@ -5,7 +5,6 @@ workspace "Moon"
 	{
 		"Debug",
 		"Release",
-		"Dist"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -27,7 +26,25 @@ project "Moon"
 
 	includedirs
 	{
-		"%{prj.name}/vendor"
+		"Moon/vendor",
+		"Moon/vendor/GLFW/include",
+		"Moon/vendor/GL/include",
+		"Moon/vendor/freetype/include"
+	}
+
+	libdirs
+	{
+		"Moon/vendor/GLFW/lib",
+		"Moon/vendor/GL/lib",
+		"Moon/vendor/freetype/lib"
+	}
+
+	links
+	{
+		"glew32s",
+		"opengl32",
+		"glfw3",
+		"freetype"
 	}
 
 	filter "system:windows"
@@ -38,7 +55,8 @@ project "Moon"
 		defines
 		{
 			"MOON_PLATFORM_WINDOWS",
-			"MOON_BUILD_DLL"
+			"MOON_BUILD_DLL",
+			"GLEW_STATIC"
 		}
 
 		postbuildcommands
@@ -49,14 +67,14 @@ project "Moon"
 	filter "configurations:Debug"
 		defines "MOON_DEBUG"
 		symbols "On"
+		staticruntime "off"
+		runtime "Debug"
 
-	filter "configurations:Debug"
+	filter "configurations:Release"
 		defines "MOON_RELEASE"
 		optimize "On"
-
-	filter "configurations:Dist"
-		defines "MOON_DIST"
-		optimize "On"
+		staticruntime "off"
+		runtime "Release"
 
 project "Sandbox"
 	location "Sandbox"
@@ -76,7 +94,10 @@ project "Sandbox"
 	includedirs
 	{
 		"Moon/vendor",
-		"Moon/src"
+		"Moon/vendor/GLFW/include",
+		"Moon/vendor/GL/include",
+		"Moon/vendor/freetype/include",
+		"Moon/src",
 	}
 
 	links
@@ -97,11 +118,11 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "MOON_DEBUG"
 		symbols "On"
+		staticruntime "off"
+		runtime "Debug"
 
-	filter "configurations:Debug"
+	filter "configurations:Release"
 		defines "MOON_RELEASE"
 		optimize "On"
-
-	filter "configurations:Dist"
-		defines "MOON_DIST"
-		optimize "On"
+		staticruntime "off"
+		runtime "Release"

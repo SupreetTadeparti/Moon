@@ -2,10 +2,12 @@
 
 #include "Core.h"
 #include <queue>
+#include <unordered_map>
 
 namespace Moon
 {
 	typedef void* EventData;
+	typedef void(*CustomEventCallback)(void*);
 
 	enum class MOON_API EventType
 	{
@@ -13,7 +15,7 @@ namespace Moon
 		MouseLeftPress, MouseLeftRelease,
 		MouseRightPress, MouseRightRelease,
 		MouseMove,
-		KeyDown, KeyUp,
+		KeyDown, KeyUp, KeyRepeat
 	};
 
 	class MOON_API Event
@@ -27,13 +29,34 @@ namespace Moon
 		EventData m_EventData;
 	};
 
+	class CustomEvent
+	{
+	public:
+		MOON_API CustomEvent(CustomEventCallback callback, Uint ms, void* app);
+		MOON_API void ResetTime();
+		MOON_API inline Uint GetInterval() const { return m_Interval; }
+		MOON_API inline void* GetApplication() const { return m_Application; }
+		MOON_API inline CustomEventCallback GetCallback() const { return m_Callback; }
+		MOON_API inline std::chrono::milliseconds GetPrevTime() const { return m_PrevTime; }
+	private:
+		CustomEventCallback m_Callback;
+		Uint m_Interval;
+		std::chrono::milliseconds m_PrevTime;
+		void* m_Application;
+	};
+
 	class EventHandler
 	{
 	public:
-		static MOON_API Event* Front();
-		static MOON_API void Push(Event* e);
-		static MOON_API void Pop();
+		MOON_API static Event* Front();
+		MOON_API static void Push(Event* e);
+		MOON_API static void Push(CustomEvent* e);
+		MOON_API static void Pop();
+		MOON_API static bool KeyDown(const char* key);
+		MOON_API static void Update();
 	private:
+		static std::unordered_map<String, bool> s_Keys;
 		static std::queue<Event*> s_EventQueue;
+		static std::vector<CustomEvent*> s_CustomEvents;
 	};
 }
