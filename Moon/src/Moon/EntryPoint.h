@@ -7,7 +7,7 @@ extern Moon::Application* Moon::CreateApplication();
 int main(int argc, char** argv)
 {
 	Moon::Logger::Init();
-	Moon::Text::Init();
+	//Moon::Text::Init();
 
 	if (Moon::Window::Init() == -1)
 	{

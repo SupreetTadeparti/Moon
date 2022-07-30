@@ -21,9 +21,11 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <map>
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <functional>
 #include <random>
 #include <chrono>
 #include <thread>
@@ -51,6 +53,8 @@ typedef glm::mat3 Mat3;
 typedef glm::mat4 Mat4;
 
 #define List std::vector
+#define Pair std::pair
+#define SortedMap std::map
 #define HashMap std::unordered_map
 
 #include "Util.hpp"

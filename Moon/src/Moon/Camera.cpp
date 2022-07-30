@@ -8,13 +8,13 @@ namespace Moon
 
 	void Camera::Move(Vec3 translation)
 	{
-		m_TranslationMatrix = glm::translate(m_TranslationMatrix, translation);
+		m_TranslationMatrix = glm::translate(m_TranslationMatrix, -translation);
 		UpdateViewMatrix();
 	}
 
 	void Camera::Move(Double x, Double y, Double z)
 	{
-		Move(-Vec3(x, y, z));
+		Move(Vec3(x, y, z));
 	}
 
 	void Camera::Rotate(Vec3 rotation)

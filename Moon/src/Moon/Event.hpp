@@ -7,15 +7,16 @@
 namespace Moon
 {
 	typedef void* EventData;
-	typedef void(*CustomEventCallback)(void*);
+	typedef void (*CustomEventCallback) (void*);
+
+	enum class ButtonType;
 
 	enum class MOON_API EventType
 	{
+		Start, Update,
 		WindowClose, WindowResize,
-		MouseLeftPress, MouseLeftRelease,
-		MouseRightPress, MouseRightRelease,
-		MouseMove,
-		KeyDown, KeyUp, KeyRepeat
+		Click, MouseMove,
+		KeyPress, KeyRelease, KeyRepeat
 	};
 
 	class MOON_API Event
@@ -33,7 +34,9 @@ namespace Moon
 	{
 	public:
 		MOON_API CustomEvent(CustomEventCallback callback, Uint ms, void* app);
+		MOON_API CustomEvent(CustomEventCallback callback, Uint ms, void* app, Bool oneTime);
 		MOON_API void ResetTime();
+		MOON_API inline Bool GetOneTime() const { return m_OneTime; }
 		MOON_API inline Uint GetInterval() const { return m_Interval; }
 		MOON_API inline void* GetApplication() const { return m_Application; }
 		MOON_API inline CustomEventCallback GetCallback() const { return m_Callback; }
@@ -43,6 +46,7 @@ namespace Moon
 		Uint m_Interval;
 		std::chrono::milliseconds m_PrevTime;
 		void* m_Application;
+		Bool m_OneTime;
 	};
 
 	class EventHandler
@@ -52,11 +56,15 @@ namespace Moon
 		MOON_API static void Push(Event* e);
 		MOON_API static void Push(CustomEvent* e);
 		MOON_API static void Pop();
-		MOON_API static bool KeyDown(const char* key);
 		MOON_API static void Update();
+		MOON_API static Bool KeyDown(const Char* key);
+		MOON_API static Bool MouseButtonDown(ButtonType bt);
 	private:
-		static std::unordered_map<String, bool> s_Keys;
 		static std::queue<Event*> s_EventQueue;
-		static std::vector<CustomEvent*> s_CustomEvents;
+		static HashMap<String, Bool> s_Keys;
+		static SortedMap<ButtonType, Bool> s_MouseButtons;
+		static List<CustomEvent*> s_CustomEvents;
+		static void* s_MouseMoveApp;
+		static void* s_ClickApp;
 	};
 }

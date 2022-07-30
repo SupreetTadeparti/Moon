@@ -13,13 +13,17 @@ namespace Moon
 	class MOON_API Texture
 	{
 	public:
-		Texture(Uint textureID);
 		Texture(const String& texturePath);
+		Texture(Uint textureID);
 		~Texture();
 		void Bind(Uint slot = 0) const;
 		void Unbind() const;
+		inline Uint GetWidth() const { return m_Width; }
+		inline Uint GetHeight() const { return m_Height; }
 	private:
 		Uint m_TextureID;
+		Uint m_Width;
+		Uint m_Height;
 	};
 
 	class Color
@@ -36,8 +40,8 @@ namespace Moon
 	class MOON_API Material
 	{
 	public:
-		Material(MaterialType, Texture* texture);
-		Material(MaterialType, Color* color);
+		Material(Texture* texture);
+		Material(Color* color);
 
 		inline Texture* GetTexture() const { return m_Texture; }
 		inline Color* GetColor() const { return m_Color; }

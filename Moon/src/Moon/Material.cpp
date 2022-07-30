@@ -5,24 +5,14 @@
 
 namespace Moon
 {
-	Material::Material(MaterialType mt, Texture* texture) : m_MaterialType(mt)
+	Material::Material(Texture* texture) : m_MaterialType(MaterialType::Texture)
 	{
-		if (mt != MaterialType::Texture)
-		{
-			MoonLogError("Material Type Does Not Match With Given Material!");
-			return;
-		}
 		m_Color = nullptr;
 		m_Texture = texture;
 	}
 
-	Material::Material(MaterialType mt, Color* color) : m_MaterialType(mt)
+	Material::Material(Color* color) : m_MaterialType(MaterialType::Color)
 	{
-		if (mt != MaterialType::Color)
-		{
-			MoonLogError("Material Type Does Not Match With Given Material");
-			return;
-		}
 		m_Color = color;
 		m_Texture = nullptr;
 	}
@@ -31,22 +21,25 @@ namespace Moon
 	{
 	}
 
-	Texture::Texture(const String& textureFile)
+	Texture::Texture(const String& textureFile) : m_TextureID(0)
 	{
 		stbi_set_flip_vertically_on_load(1);
 
 		int width, height, nrChannels;
-		unsigned char* data = stbi_load(("./src/textures/" + textureFile).c_str(), &width, &height, &nrChannels, 4);
+		unsigned char* data = stbi_load(("./src/textures/" + textureFile).c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
+
+		m_Width = width;
+		m_Height = height;
 
 		if (data)
 		{
 			glGenTextures(1, &m_TextureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glBindTexture(GL_TEXTURE_2D, m_TextureID);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		else

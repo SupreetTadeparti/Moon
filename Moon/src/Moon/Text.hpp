@@ -47,8 +47,7 @@ namespace std
 	{
 		std::size_t operator()(const Moon::Font& f) const
 		{
-			return ((std::hash<String>()(f.name)
-				^ (std::hash<Uint>()(f.size) << 1)) >> 1);
+			return ((std::hash<String>()(f.name) ^ (std::hash<Uint>()(f.size) << 1)) >> 1);
 		}
 	};
 }

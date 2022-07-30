@@ -2,8 +2,14 @@
 
 namespace Moon
 {
+	Model* Models::s_RectModel = nullptr;
+	Model* Models::s_BoxModel = nullptr;
+
 	Model* Models::Rect(Float width, Float height)
 	{
+		if (s_RectModel != nullptr)
+			return s_RectModel;
+
 		Float data[] = {
 			// Positions
 		   -width / 2, -height / 2,
@@ -37,7 +43,9 @@ namespace Moon
 
 		vao->SetIBO(ibo);
 
-		return new Model(vao);
+		s_RectModel = new Model(vao);
+
+		return s_RectModel;
 	}
 
 	Model* Models::Rect(Material* material, Float width, Float height)
@@ -63,6 +71,9 @@ namespace Moon
 
 	Model* Models::Box(Float width, Float length, Float height)
 	{
+		if (s_BoxModel != nullptr)
+			return s_BoxModel;
+
 		Float data[] = {
 			// Back
 			-width / 2,  height / 2, -length / 2,
@@ -100,12 +111,12 @@ namespace Moon
 			 width / 2, -height / 2, -length / 2,
 			 width / 2, -height / 2,  length / 2,
 
-			0, 1, 0, 0, 1, 0, 1, 1,
-			1, 1, 1, 0, 0, 0, 0, 1,
-			0, 1, 0, 0, 1, 0, 1, 1,
-			1, 1, 1, 0, 0, 0, 0, 1,
-			1, 0, 1, 1, 0, 1, 0, 0,
-			1, 1, 1, 0, 0, 0, 0, 1,
+			 0, 1, 0, 0, 1, 0, 1, 1,
+			 1, 1, 1, 0, 0, 0, 0, 1,
+			 0, 1, 0, 0, 1, 0, 1, 1,
+			 1, 1, 1, 0, 0, 0, 0, 1,
+			 1, 0, 1, 1, 0, 1, 0, 0,
+			 1, 1, 1, 0, 0, 0, 0, 1,
 		};
 
 		Uint indices[] = {
@@ -137,7 +148,9 @@ namespace Moon
 
 		vao->SetIBO(ibo);
 
-		return new Model(vao);
+		s_BoxModel = new Model(vao);
+
+		return s_BoxModel;
 	}
 
 	Model* Models::Box(Material* material, Float width, Float length, Float height)

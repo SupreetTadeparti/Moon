@@ -32,6 +32,5 @@ namespace Moon
 	template MOON_API Buffer::Buffer(Double* data, Uint count);
 	template MOON_API Buffer::Buffer(Float* data, Uint count);
 	template MOON_API Buffer::Buffer(Int* data, Uint count);
-
 	template MOON_API IndexBuffer::IndexBuffer(Uint* data, Uint count);
 }

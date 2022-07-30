@@ -1,25 +1,13 @@
 #include <Moon.h>
 
-class Sandbox : public Moon::Application
+using namespace Moon;
+
+class Sandbox : public Application
 {
 public:
-	Sandbox()
-	{
-	}
-
-	void OnStart()
-	{
-
-	}
-
-	void OnUpdate()
-	{
-
-	}
 };
 
-Moon::Application* Moon::CreateApplication()
+Application* Moon::CreateApplication()
 {
 	return new Sandbox();
 }
-

@@ -12,7 +12,7 @@ namespace Moon
 		MOON_API void Move(Double x, Double y, Double z);
 		MOON_API void Rotate(Vec3 rotation);
 		MOON_API void Rotate(Double x, Double y, Double z);
-		MOON_API inline Mat4 const GetViewMatrix() const { return m_ViewMatrix; };
+		MOON_API inline Mat4 const GetViewMatrix() const { return m_ViewMatrix; }
 	private:
 		void UpdateViewMatrix();
 		Vec3 m_Rotation;

@@ -16,5 +16,8 @@ namespace Moon
 		MOON_API static Model* Box(Material* color, Float width, Float length, Float height);
 		MOON_API static Model* Box(Shader* shader, Float width, Float length, Float height);
 		MOON_API static Model* Box(Shader* shader, Material* color, Float width, Float length, Float height);
+	private:
+		static Model* s_RectModel;
+		static Model* s_BoxModel;
 	};
 }

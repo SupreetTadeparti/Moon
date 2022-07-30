@@ -27,18 +27,50 @@ namespace Moon
 			case GLFW_KEY_RIGHT_SHIFT: return "RSHIFT";
 			case GLFW_KEY_ESCAPE: return "ESCAPE";
 			case GLFW_KEY_ENTER: return "ENTER";
+			case GLFW_KEY_UP: return "UP";
+			case GLFW_KEY_LEFT: return "LEFT";
+			case GLFW_KEY_RIGHT: return "RIGHT";
+			case GLFW_KEY_DOWN: return "DOWN";
 			default: return "(UNKNOWN)";
 		}
 	}
 
 	void Window::KeyCallback(GLFWwindow* window, Int key, Int scancode, Int action, Int mods)
 	{
-		EventHandler::Push(new Event((action == GLFW_PRESS ? EventType::KeyDown : action == GLFW_REPEAT ? EventType::KeyRepeat : EventType::KeyUp), static_cast<void*>(new String(GetKeyName(key)))));
+		EventHandler::Push(new Event((action == GLFW_PRESS ? EventType::KeyPress : action == GLFW_RELEASE ? EventType::KeyRelease : EventType::KeyRepeat), static_cast<void*>(new String(GetKeyName(key)))));
 	}
 
 	void Window::MessageCallback(Uint source, Uint type, Uint id, Uint severity, Int length, const Char* message, const void* data)
 	{
 		MoonLogError(message);
+	}
+
+	void Window::MouseMoveCallback(GLFWwindow* window, Double xpos, Double ypos)
+	{
+		EventHandler::Push(new Event(EventType::MouseMove, static_cast<void*>(new Vec2(xpos, ypos))));
+	}
+
+	void Window::ClickCallback(GLFWwindow* window, Int button, Int action, Int mods)
+	{
+		Double xpos;
+		Double ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		if (button == GLFW_MOUSE_BUTTON_1)
+		{
+			ClickData* eventData = new ClickData();
+			eventData->Position = Vec2(xpos, ypos);
+			eventData->Type = ButtonType::LeftButton;
+			eventData->Action = action == GLFW_PRESS ? ButtonAction::Press : ButtonAction::Release;
+			EventHandler::Push(new Event(EventType::Click, static_cast<void*>(eventData)));
+		}
+		else if (button == GLFW_MOUSE_BUTTON_2)
+		{
+			ClickData* eventData = new ClickData();
+			eventData->Position = Vec2(xpos, ypos);
+			eventData->Type = ButtonType::RightButton;
+			eventData->Action = action == GLFW_PRESS ? ButtonAction::Press : ButtonAction::Release;
+			EventHandler::Push(new Event(EventType::Click, static_cast<void*>(eventData)));
+		}
 	}
 
 	Int Window::Create()
@@ -66,6 +98,8 @@ namespace Moon
 		glDebugMessageCallback(MessageCallback, NULL);
 
 		glfwSetKeyCallback(s_Window, KeyCallback);
+		glfwSetCursorPosCallback(s_Window, MouseMoveCallback);
+		glfwSetMouseButtonCallback(s_Window, ClickCallback);
 
 		return 0;
 	}
@@ -100,5 +134,22 @@ namespace Moon
 	{
 		s_Width = width;
 		s_Height = height;
+	}
+
+	void Window::SetCursorType(CursorType ct)
+	{
+		GLFWcursor* cursor = nullptr;
+		
+		switch (ct)
+		{
+		case CursorType::Pointer:
+			cursor = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+			break;
+		case CursorType::Normal:
+			cursor = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+			break;
+		}
+
+		glfwSetCursor(s_Window, cursor);
 	}
 }

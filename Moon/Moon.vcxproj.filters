@@ -31,6 +31,9 @@
     <ClInclude Include="src\Moon\Event.hpp">
       <Filter>Moon</Filter>
     </ClInclude>
+    <ClInclude Include="src\Moon\EventController.hpp">
+      <Filter>Moon</Filter>
+    </ClInclude>
     <ClInclude Include="src\Moon\Logger.hpp">
       <Filter>Moon</Filter>
     </ClInclude>
@@ -52,10 +55,13 @@
     <ClInclude Include="src\Moon\Renderer.hpp">
       <Filter>Moon</Filter>
     </ClInclude>
+    <ClInclude Include="src\Moon\Scene.hpp">
+      <Filter>Moon</Filter>
+    </ClInclude>
     <ClInclude Include="src\Moon\Shader.hpp">
       <Filter>Moon</Filter>
     </ClInclude>
-    <ClInclude Include="src\Moon\Text.hpp">
+    <ClInclude Include="src\Moon\Sprite.hpp">
       <Filter>Moon</Filter>
     </ClInclude>
     <ClInclude Include="src\Moon\Util.hpp">
@@ -108,10 +114,13 @@
     <ClCompile Include="src\Moon\Renderer.cpp">
       <Filter>Moon</Filter>
     </ClCompile>
+    <ClCompile Include="src\Moon\Scene.cpp">
+      <Filter>Moon</Filter>
+    </ClCompile>
     <ClCompile Include="src\Moon\Shader.cpp">
       <Filter>Moon</Filter>
     </ClCompile>
-    <ClCompile Include="src\Moon\Text.cpp">
+    <ClCompile Include="src\Moon\Sprite.cpp">
       <Filter>Moon</Filter>
     </ClCompile>
     <ClCompile Include="src\Moon\Util.cpp">

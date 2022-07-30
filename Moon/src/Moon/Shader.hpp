@@ -35,11 +35,10 @@ namespace Moon
 
 		inline void Bind() const { glUseProgram(m_ProgramID); };
 		inline void Unbind() const { glUseProgram(0); };
-		static void Init();
 
-		static inline Shader* DefaultColor() { return s_DefaultColorShader; }
-		static inline Shader* DefaultText() { return s_DefaultTextShader; }
-		static inline Shader* DefaultTexture() { return s_DefaultTextureShader; }
+		static Shader* GenerateDefaultColor();
+		static Shader* GenerateDefaultText();
+		static Shader* GenerateDefaultTexture();
 	private:
 		Int GetUniformLocation(const String& uniformName);
 		static ShaderSource ParseShader(const String& vertexPath, const String& fragmentPath);
@@ -47,8 +46,5 @@ namespace Moon
 		Uint m_ProgramID;
 		Uint m_VertexID;
 		Uint m_FragmentID;
-		static Shader* s_DefaultColorShader;
-		static Shader* s_DefaultTextureShader;
-		static Shader* s_DefaultTextShader;
 	};
 }

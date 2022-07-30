@@ -4,6 +4,28 @@
 
 namespace Moon
 {
+	enum class CursorType
+	{
+		Normal, Pointer
+	};
+
+	enum class ButtonType
+	{
+		LeftButton, RightButton
+	};
+
+	enum class ButtonAction
+	{
+		Press, Release
+	};
+
+	struct ClickData
+	{
+		Vec2 Position;
+		ButtonType Type;
+		ButtonAction Action;
+	};
+
 	class Window
 	{
 	public:
@@ -22,13 +44,15 @@ namespace Moon
 		MOON_API static void SetBackgroundColor(Float r, Float g, Float b);
 		MOON_API static void SetTitle(const String& title);
 		MOON_API static void SetDimensions(Uint width, Uint height);
+		MOON_API static void SetCursorType(CursorType);
 	private:
 		MOON_API static const Char* Window::GetKeyName(Int key);
 		MOON_API static void KeyCallback(GLFWwindow*, Int, Int, Int, Int);
 		MOON_API static void MessageCallback(Uint source, Uint type, Uint id,
 			Uint severity, Int length,
 			const Char* msg, const void* data);
-
+		MOON_API static void MouseMoveCallback(GLFWwindow*, Double, Double);
+		MOON_API static void ClickCallback(GLFWwindow*, Int, Int, Int);
 		static GLFWwindow* s_Window;
 		static Uint s_Width;
 		static Uint s_Height;

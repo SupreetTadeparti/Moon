@@ -2,20 +2,14 @@
 
 namespace Moon
 {
-	std::unordered_map<Model*, std::vector<Entity*>> Renderer::s_ModelEntityMap;
+	Scene* Renderer::s_Scene = nullptr;
+	Double Renderer::s_FOV = 70.0f;
+	RenderType Renderer::s_RenderType = RenderType::ThreeD;
 	Vec3 Renderer::s_BackgroundColor(0.7f);
 
-	void Renderer::AddEntity(Entity* entity)
+	void Renderer::Update()
 	{
-		s_ModelEntityMap[entity->GetModel()].push_back(entity);
-	}
-
-	void Renderer::AddText(Text* text)
-	{
-		for (Entity* entity : text->GetCharacters())
-		{
-			AddEntity(entity);
-		}
+		//s_Scene->UpdateCallback();
 	}
 
 	void Renderer::Prepare()
@@ -29,13 +23,18 @@ namespace Moon
 
 	void Renderer::Render()
 	{
-		for (auto& pair : s_ModelEntityMap)
+		for (Model* model : s_Scene->GetModels())
 		{
-			Model* model = pair.first;
 			model->GetVertexArray()->Bind();
 			model->GetVertexArray()->GetIndexBuffer()->Bind();
 			model->GetShader()->Bind();
-			for (auto& entity : pair.second)
+			if (s_Scene->GetCamera() != nullptr)
+			{
+				model->GetShader()->Bind();
+				model->GetShader()->SetView(s_Scene->GetCamera()->GetViewMatrix());
+			}
+			List<Entity*> entities = s_Scene->GetEntities()[model];
+			for (Entity* entity : entities)
 			{
 				MaterialType materialType = entity->GetMaterial()->GetMaterialType();
 				if (materialType == MaterialType::Color)

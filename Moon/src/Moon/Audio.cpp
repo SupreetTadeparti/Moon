@@ -8,7 +8,7 @@ namespace Moon
 {
 	void Audio::Play(const String& file)
 	{
-		String command = "play \"./src/sound/" + file + ".mp3\"";
-		mciSendString(WString(command.begin(), command.end()).c_str(), NULL, 0, NULL);
+		String play = "play \"./src/sound/" + file + "\"";
+		mciSendStringW(WString(play.begin(), play.end()).c_str(), NULL, 0, NULL);
 	}
 }

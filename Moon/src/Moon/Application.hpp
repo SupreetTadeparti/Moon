@@ -1,14 +1,12 @@
 #pragma once
 
-#include "Core.h"
+#include "EventController.hpp"
 
 namespace Moon
 {
-	class MOON_API Application
+	class MOON_API Application : public ClassEventController
 	{
 	public:
-		virtual void OnStart() {};
-		virtual void OnUpdate() {};
 		void Run();
 		void Close();
 	};

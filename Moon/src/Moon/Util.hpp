@@ -4,10 +4,10 @@
 
 namespace Moon
 {
-	class MOON_API Util
+	namespace Util
 	{
-	public:
-		static Int Random(Int start, Int end);
-		static std::chrono::milliseconds CurrentTime();
-	};
+		using namespace std::chrono;
+		MOON_API Int Random(Int start, Int end);
+		MOON_API milliseconds CurrentTime();
+	}
 }

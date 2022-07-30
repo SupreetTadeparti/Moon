@@ -55,7 +55,7 @@ namespace Moon
                 GL_UNSIGNED_BYTE,
                 face->glyph->bitmap.buffer
             );
-            
+
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -88,7 +88,7 @@ namespace Moon
             InitFont(font);
 		}
 
-        Model* model = Models::Rect(Shader::DefaultText(), 30.0f, 30.0f);
+        Model* model = Models::Rect(Shader::GenerateDefaultText(), 30.0f, 30.0f);
 
         for (const Char& c : text)
         {
@@ -101,7 +101,7 @@ namespace Moon
             Float h = ch.Size.y;
 
             Entity* entity = new Entity(model, Vec3(xpos, ypos, 0), Vec3(), Vec3(1, -1, 1));
-            entity->SetMaterial(new Material(MaterialType::Texture, new Texture(ch.TextureID)));
+            entity->SetMaterial(new Material(new Texture(ch.TextureID)));
             m_Characters.push_back(entity);
 
             x += ch.Advance >> 6;

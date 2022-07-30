@@ -1,28 +1,43 @@
 #include "Shader.hpp"
+#include "Renderer.hpp"
 
 namespace Moon
 {
-	Shader* Shader::s_DefaultColorShader;
-	Shader* Shader::s_DefaultTextureShader;
-	Shader* Shader::s_DefaultTextShader;
-
-	void Shader::Init()
+	Shader* Shader::GenerateDefaultColor()
 	{
-		s_DefaultColorShader = new Shader("DefaultColorVertex.glsl", "DefaultColorFragment.glsl");
-		s_DefaultTextShader = new Shader("DefaultTextVertex.glsl", "DefaultTextFragment.glsl");
-		s_DefaultTextureShader = new Shader("DefaultTextureVertex.glsl", "DefaultTextureFragment.glsl");
+		Shader* shader = new Shader("DefaultColorVertex.glsl", "DefaultColorFragment.glsl");
+		shader->Bind();
+		if (Renderer::GetRenderType() == RenderType::TwoD)
+		{
+			shader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
+		}
+		else if (Renderer::GetRenderType() == RenderType::ThreeD)
+		{
+			shader->SetProjection(Math::Perspective(Renderer::GetFOV(), (Double)(Window::GetWidth()) / (Double)(Window::GetHeight()), 0.01, 1000.));
+		}
+		shader->SetView(Mat4(1.0f));
+		shader->Unbind();
+		return shader;
+	}
 
-		s_DefaultColorShader->Bind();
-		s_DefaultColorShader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
-		s_DefaultColorShader->SetView(Mat4(1.0f));
-		
-		s_DefaultTextShader->Bind();
-		s_DefaultTextShader->SetProjection(glm::ortho(0.0f, 600.0f, 0.0f, 600.0f, -1.0f, 1.0f));
-		s_DefaultTextShader->SetView(Mat4(1.0f));
+	Shader* Shader::GenerateDefaultTexture()
+	{
+		Shader* shader = new Shader("DefaultTextureVertex.glsl", "DefaultTextureFragment.glsl");
+		shader->Bind();
+		shader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
+		shader->SetView(Mat4(1.0f));
+		shader->Unbind();
+		return shader;
+	}
 
-		s_DefaultTextureShader->Bind();
-		s_DefaultTextureShader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
-		s_DefaultTextureShader->SetView(Mat4(1.0f));
+	Shader* Shader::GenerateDefaultText()
+	{
+		Shader* shader = new Shader("DefaultTextVertex.glsl", "DefaultTextFragment.glsl");
+		shader->Bind();
+		shader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
+		shader->SetView(Mat4(1.0f));
+		shader->Unbind();
+		return shader;
 	}
 
 	void Shader::SetProjection(Mat4 mat)
@@ -111,7 +126,10 @@ namespace Moon
 	{
 		GLint activeProgram = 0;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &activeProgram);
-		if (activeProgram == 0) Bind();
+		if (activeProgram == 0)
+		{
+			Bind();
+		}
 		return glGetUniformLocation(m_ProgramID, uniformName.c_str());
 	}
 

@@ -8,6 +8,12 @@ namespace Moon
 		UpdateModelMatrix();
 	}
 
+	Entity::Entity(Sprite* sprite, Vec3 translation, Vec3 rotation, Vec3 scale) : m_Model(sprite->GetModel()), m_Translation(translation), m_Rotation(rotation), m_Scale(scale)
+	{
+		m_Material = m_Model->GetMaterial();
+		UpdateModelMatrix();
+	}
+
 	void Entity::SetMaterial(Material* material)
 	{
 		m_Material = material;
