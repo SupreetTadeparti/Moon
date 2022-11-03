@@ -2,17 +2,19 @@
 
 namespace Moon
 {
-	const Vec4 Model::s_DefaultColor(255.0f / 2, 255.0f / 2, 255.0f / 2, 1.0f);
-
-	Model::Model(VertexArray* vao) : m_Shader(Shader::GenerateDefaultColor()), m_VertexArray(vao), m_Material(new Material(new Color(s_DefaultColor)))
+	Model::Model(Shape shape) : m_Shader(Shader::GetDefault()), m_VertexArray(VertexArray::Default(shape)), m_Material(Material::GetDefault())
 	{
 	}
 
-	Model::Model(VertexArray* vao, Material* material) : m_Shader(material->GetMaterialType() == MaterialType::Texture ? Shader::GenerateDefaultTexture() : Shader::GenerateDefaultColor()), m_VertexArray(vao), m_Material(material)
+	Model::Model(VertexArray* vao) : m_Shader(Shader::GetDefault()), m_VertexArray(vao), m_Material(Material::GetDefault())
 	{
 	}
 
-	Model::Model(Shader* shader, VertexArray* vao) : m_Shader(shader), m_VertexArray(vao), m_Material(new Material(new Color(s_DefaultColor)))
+	Model::Model(VertexArray* vao, Material* material) : m_Shader(Shader::GetDefault()), m_VertexArray(vao), m_Material(material)
+	{
+	}
+
+	Model::Model(Shader* shader, VertexArray* vao) : m_Shader(shader), m_VertexArray(vao), m_Material(Material::GetDefault())
 	{
 	}
 

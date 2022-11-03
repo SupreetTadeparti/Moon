@@ -19,7 +19,7 @@ namespace Moon
 	class MOON_API Shader
 	{
 	public:
-		Shader(const String& vertexPath, const String& fragmentPath);
+		Shader(const String& vertexPath, const String& fragmentPath, Bool displayError=true);
 		void SetUniformInt(const String& uniformName, Int value);
 		void SetUniformFloat(const String& uniformName, Float value);
 		void SetUniformVec2(const String& uniformName, Vec2 vec);
@@ -36,13 +36,14 @@ namespace Moon
 		inline void Bind() const { glUseProgram(m_ProgramID); };
 		inline void Unbind() const { glUseProgram(0); };
 
-		static Shader* GenerateDefaultColor();
-		static Shader* GenerateDefaultText();
-		static Shader* GenerateDefaultTexture();
+		static Shader* GetDefault();
+		static void GenerateDefault();
 	private:
 		Int GetUniformLocation(const String& uniformName);
 		static ShaderSource ParseShader(const String& vertexPath, const String& fragmentPath);
 		static Uint CompileShader(ShaderType shaderType,const String& shaderSource);
+		static Shader* s_DefaultShader;
+		Bool m_DisplayErrors;
 		Uint m_ProgramID;
 		Uint m_VertexID;
 		Uint m_FragmentID;

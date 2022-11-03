@@ -4,6 +4,16 @@ namespace Moon
 {
 	const LongDouble Math::PI = M_PI;
 
+	MOON_API Double Math::Radians(Double degrees)
+	{
+		return glm::radians(degrees);
+	}
+
+	MOON_API Double Math::Degrees(Double radians)
+	{
+		return glm::degrees(radians);
+	}
+
 	template <typename T>
 	MOON_API Mat4 Math::Perspective(T fov, T aspect, T zNear, T zFar)
 	{

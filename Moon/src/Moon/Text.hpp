@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core.h"
-#include "Models.hpp"
+#include "Model.hpp"
 #include "Entity.hpp"
 #include "ft2build.h"
 #include FT_FREETYPE_H

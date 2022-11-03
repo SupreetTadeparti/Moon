@@ -5,6 +5,20 @@
 
 namespace Moon
 {
+	Material* Material::s_DefaultMaterial = nullptr;
+	const Vec4 Material::s_DefaultColor(255.0f / 2, 255.0f / 2, 255.0f / 2, 1.0f);
+
+	void Material::GenerateDefault()
+	{
+		s_DefaultMaterial = new Material(new Color(s_DefaultColor));
+	}
+
+	Material* Material::GetDefault()
+	{
+		if (s_DefaultMaterial == nullptr) GenerateDefault();
+		return s_DefaultMaterial;
+	}
+
 	Material::Material(Texture* texture) : m_MaterialType(MaterialType::Texture)
 	{
 		m_Color = nullptr;

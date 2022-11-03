@@ -7,7 +7,7 @@
 namespace Moon
 {
 	typedef void* EventData;
-	typedef void (*CustomEventCallback) (void*);
+	typedef std::function<void()> CustomEventCallback;
 
 	enum class ButtonType;
 
@@ -33,18 +33,18 @@ namespace Moon
 	class CustomEvent
 	{
 	public:
-		MOON_API CustomEvent(CustomEventCallback callback, Uint ms, void* app);
-		MOON_API CustomEvent(CustomEventCallback callback, Uint ms, void* app, Bool oneTime);
+		MOON_API CustomEvent(CustomEventCallback callback, Uint ms);
+		MOON_API CustomEvent(CustomEventCallback callback, Uint ms, Bool oneTime);
+		MOON_API void Invoke();
 		MOON_API void ResetTime();
 		MOON_API inline Bool GetOneTime() const { return m_OneTime; }
 		MOON_API inline Uint GetInterval() const { return m_Interval; }
+		MOON_API inline Uint GetPrevTime() const { return m_PrevTime; }
 		MOON_API inline void* GetApplication() const { return m_Application; }
-		MOON_API inline CustomEventCallback GetCallback() const { return m_Callback; }
-		MOON_API inline std::chrono::milliseconds GetPrevTime() const { return m_PrevTime; }
 	private:
 		CustomEventCallback m_Callback;
 		Uint m_Interval;
-		std::chrono::milliseconds m_PrevTime;
+		Uint m_PrevTime;
 		void* m_Application;
 		Bool m_OneTime;
 	};
@@ -53,8 +53,8 @@ namespace Moon
 	{
 	public:
 		MOON_API static Event* Front();
-		MOON_API static void Push(Event* e);
-		MOON_API static void Push(CustomEvent* e);
+		MOON_API static void Add(Event* e);
+		MOON_API static void AddCustomEvent(CustomEvent* e);
 		MOON_API static void Pop();
 		MOON_API static void Update();
 		MOON_API static Bool KeyDown(const Char* key);

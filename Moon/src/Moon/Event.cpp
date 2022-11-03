@@ -13,19 +13,24 @@ namespace Moon
 	{
 	}
 
-	CustomEvent::CustomEvent(CustomEventCallback callback, Uint ms, void* app) : m_Callback(callback), m_Interval(ms), m_Application(app), m_OneTime(false)
+	CustomEvent::CustomEvent(CustomEventCallback callback, Uint ms) : m_Callback(callback), m_Interval(ms), m_OneTime(false)
 	{
 		ResetTime();
 	}
 
-	CustomEvent::CustomEvent(CustomEventCallback callback, Uint ms, void* app, Bool oneTime) : m_Callback(callback), m_Interval(ms), m_Application(app), m_OneTime(oneTime)
+	CustomEvent::CustomEvent(CustomEventCallback callback, Uint ms, Bool oneTime) : m_Callback(callback), m_Interval(ms), m_OneTime(oneTime)
 	{
 		ResetTime();
+	}
+
+	void CustomEvent::Invoke()
+	{
+		std::invoke(m_Callback);
 	}
 
 	void CustomEvent::ResetTime()
 	{
-		m_PrevTime = Util::CurrentTime();
+		m_PrevTime = Util::Time::CurrentTime(Util::TimeUnit::Millisecond);
 	}
 
 	Event* EventHandler::Front()
@@ -40,7 +45,7 @@ namespace Moon
 		s_EventQueue.pop();
 	}
 
-	void EventHandler::Push(Event* e)
+	void EventHandler::Add(Event* e)
 	{
 		EventType eventType = e->GetEventType();
 		if (eventType == EventType::KeyPress)
@@ -59,7 +64,7 @@ namespace Moon
 		s_EventQueue.push(e);
 	}
 
-	void EventHandler::Push(CustomEvent* e)
+	void EventHandler::AddCustomEvent(CustomEvent* e)
 	{
 		s_CustomEvents.push_back(e);
 	}
@@ -81,10 +86,12 @@ namespace Moon
 		for (Uint i = 0; i < s_CustomEvents.size(); i++)
 		{
 			CustomEvent* e = s_CustomEvents[i];
-			if ((Util::CurrentTime() - e->GetPrevTime()).count() >= e->GetInterval())
+			Uint prevTime = e->GetPrevTime();
+			Uint currTime = Util::Time::CurrentTime(Util::TimeUnit::Millisecond);
+			if (currTime - prevTime >= e->GetInterval())
 			{
 				e->ResetTime();
-				e->GetCallback()(e->GetApplication());
+				e->Invoke();
 				if (e->GetOneTime())
 				{
 					rem.push_back(e);

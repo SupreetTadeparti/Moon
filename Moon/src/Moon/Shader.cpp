@@ -3,41 +3,28 @@
 
 namespace Moon
 {
-	Shader* Shader::GenerateDefaultColor()
+	Shader* Shader::s_DefaultShader = nullptr;
+
+	Shader* Shader::GetDefault()
 	{
-		Shader* shader = new Shader("DefaultColorVertex.glsl", "DefaultColorFragment.glsl");
-		shader->Bind();
+		if (s_DefaultShader == nullptr) GenerateDefault();
+		return s_DefaultShader;
+	}
+
+	void Shader::GenerateDefault()
+	{
+		s_DefaultShader = new Shader("DefaultVertex.glsl", "DefaultFragment.glsl");
+		s_DefaultShader->Bind();
 		if (Renderer::GetRenderType() == RenderType::TwoD)
 		{
-			shader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
+			s_DefaultShader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
 		}
 		else if (Renderer::GetRenderType() == RenderType::ThreeD)
 		{
-			shader->SetProjection(Math::Perspective(Renderer::GetFOV(), (Double)(Window::GetWidth()) / (Double)(Window::GetHeight()), 0.01, 1000.));
+			s_DefaultShader->SetProjection(Math::Perspective(Renderer::GetFOV(), (Double)(Window::GetWidth()) / (Double)(Window::GetHeight()), 0.01, 1000.));
 		}
-		shader->SetView(Mat4(1.0f));
-		shader->Unbind();
-		return shader;
-	}
-
-	Shader* Shader::GenerateDefaultTexture()
-	{
-		Shader* shader = new Shader("DefaultTextureVertex.glsl", "DefaultTextureFragment.glsl");
-		shader->Bind();
-		shader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
-		shader->SetView(Mat4(1.0f));
-		shader->Unbind();
-		return shader;
-	}
-
-	Shader* Shader::GenerateDefaultText()
-	{
-		Shader* shader = new Shader("DefaultTextVertex.glsl", "DefaultTextFragment.glsl");
-		shader->Bind();
-		shader->SetProjection(Math::Ortho(0.0f, (Float)Window::GetWidth(), 0.0f, (Float)Window::GetHeight(), -1.0f, 1.0f));
-		shader->SetView(Mat4(1.0f));
-		shader->Unbind();
-		return shader;
+		s_DefaultShader->SetView(Mat4(1.0f));
+		s_DefaultShader->Unbind();
 	}
 
 	void Shader::SetProjection(Mat4 mat)
@@ -102,7 +89,7 @@ namespace Moon
 		return shaderID;
 	}
 
-	Shader::Shader(const String& vertexPath, const String& fragmentPath)
+	Shader::Shader(const String& vertexPath, const String& fragmentPath, Bool err) : m_DisplayErrors(err)
 	{
 		ShaderSource shaderSource = ParseShader(vertexPath, fragmentPath);
 
@@ -136,7 +123,7 @@ namespace Moon
 	void Shader::SetUniformInt(const String& uniformName, Int val)
 	{
 		Int location = GetUniformLocation(uniformName);
-		if (location == -1)
+		if (location == -1 && m_DisplayErrors)
 		{
 			MoonLogError("Uniform " + uniformName + " Not Found!");
 			return;
@@ -147,7 +134,7 @@ namespace Moon
 	void Shader::SetUniformFloat(const String& uniformName, Float val)
 	{
 		Int location = GetUniformLocation(uniformName);
-		if (location == -1)
+		if (location == -1 && m_DisplayErrors)
 		{
 			MoonLogError("Uniform " + uniformName + " Not Found!");
 			return;
@@ -158,7 +145,7 @@ namespace Moon
 	void Shader::SetUniformVec2(const String& uniformName, Vec2 vec)
 	{
 		Int location = GetUniformLocation(uniformName);
-		if (location == -1)
+		if (location == -1 && m_DisplayErrors)
 		{
 			MoonLogError("Uniform " + uniformName + " Not Found!");
 			return;
@@ -169,7 +156,7 @@ namespace Moon
 	void Shader::SetUniformVec3(const String& uniformName, Vec3 vec)
 	{
 		Int location = GetUniformLocation(uniformName);
-		if (location == -1)
+		if (location == -1 && m_DisplayErrors)
 		{
 			MoonLogError("Uniform " + uniformName + " Not Found!");
 			return;
@@ -180,7 +167,7 @@ namespace Moon
 	void Shader::SetUniformVec4(const String& uniformName, Vec4 vec)
 	{
 		Int location = GetUniformLocation(uniformName);
-		if (location == -1)
+		if (location == -1 && m_DisplayErrors)
 		{
 			MoonLogError("Uniform " + uniformName + " Not Found!");
 			return;
@@ -191,7 +178,7 @@ namespace Moon
 	void Shader::SetUniformMat3(const String& uniformName, Mat3 mat)
 	{
 		Int location = GetUniformLocation(uniformName);
-		if (location == -1)
+		if (location == -1 && m_DisplayErrors)
 		{
 			MoonLogError("Uniform " + uniformName + " Not Found!");
 			return;
@@ -202,7 +189,7 @@ namespace Moon
 	void Shader::SetUniformMat4(const String& uniformName, Mat4 mat)
 	{
 		Int location = GetUniformLocation(uniformName);
-		if (location == -1)
+		if (location == -1 && m_DisplayErrors)
 		{
 			MoonLogError("Uniform " + uniformName + " Not Found!");
 			return;

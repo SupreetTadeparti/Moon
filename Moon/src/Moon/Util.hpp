@@ -7,7 +7,26 @@ namespace Moon
 	namespace Util
 	{
 		using namespace std::chrono;
-		MOON_API Int Random(Int start, Int end);
-		MOON_API milliseconds CurrentTime();
+
+		enum class TimeUnit
+		{
+			Microsecond,
+			Millisecond,
+			Second,
+		};
+
+		class Random
+		{
+		public:
+			template <class T>
+			static MOON_API T Choice(List<T> list);
+			MOON_API static Int Range(Int start, Int end);
+		};
+
+		class Time
+		{
+		public:
+			MOON_API static Uint CurrentTime(TimeUnit=TimeUnit::Second);
+		};
 	}
 }

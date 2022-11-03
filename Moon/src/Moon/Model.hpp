@@ -9,21 +9,21 @@ namespace Moon
 	class Model
 	{
 	public:
-		Model(VertexArray*);
-		Model(VertexArray*, Material*);
-		Model(Shader*, VertexArray*);
-		Model(Shader*, VertexArray*, Material*);
-		void SetVertexArray(VertexArray*);
-		void SetMaterial(Material*);
-		void SetShader(Shader*);
-		void Render() const;
-		inline VertexArray* GetVertexArray() const { return m_VertexArray; }
-		inline Material* GetMaterial() const { return m_Material; }
-		inline Shader* GetShader() const { return m_Shader; }
+		MOON_API Model(Shape);
+		MOON_API Model(VertexArray*);
+		MOON_API Model(VertexArray*, Material*);
+		MOON_API Model(Shader*, VertexArray*);
+		MOON_API Model(Shader*, VertexArray*, Material*);
+		MOON_API void SetVertexArray(VertexArray*);
+		MOON_API void SetMaterial(Material*);
+		MOON_API void SetShader(Shader*);
+		MOON_API void Render() const;
+		MOON_API inline VertexArray* GetVertexArray() const { return m_VertexArray; }
+		MOON_API inline Material* GetMaterial() const { return m_Material; }
+		MOON_API inline Shader* GetShader() const { return m_Shader; }
 	private:
 		VertexArray* m_VertexArray;
 		Material* m_Material;
 		Shader* m_Shader;
-		static const Vec4 s_DefaultColor;
 	};
 }

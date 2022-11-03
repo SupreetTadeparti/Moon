@@ -37,7 +37,7 @@ namespace Moon
 
 	void Window::KeyCallback(GLFWwindow* window, Int key, Int scancode, Int action, Int mods)
 	{
-		EventHandler::Push(new Event((action == GLFW_PRESS ? EventType::KeyPress : action == GLFW_RELEASE ? EventType::KeyRelease : EventType::KeyRepeat), static_cast<void*>(new String(GetKeyName(key)))));
+		EventHandler::Add(new Event((action == GLFW_PRESS ? EventType::KeyPress : action == GLFW_RELEASE ? EventType::KeyRelease : EventType::KeyRepeat), static_cast<void*>(new String(GetKeyName(key)))));
 	}
 
 	void Window::MessageCallback(Uint source, Uint type, Uint id, Uint severity, Int length, const Char* message, const void* data)
@@ -47,7 +47,7 @@ namespace Moon
 
 	void Window::MouseMoveCallback(GLFWwindow* window, Double xpos, Double ypos)
 	{
-		EventHandler::Push(new Event(EventType::MouseMove, static_cast<void*>(new Vec2(xpos, ypos))));
+		EventHandler::Add(new Event(EventType::MouseMove, static_cast<void*>(new Vec2(xpos, ypos))));
 	}
 
 	void Window::ClickCallback(GLFWwindow* window, Int button, Int action, Int mods)
@@ -61,7 +61,7 @@ namespace Moon
 			eventData->Position = Vec2(xpos, ypos);
 			eventData->Type = ButtonType::LeftButton;
 			eventData->Action = action == GLFW_PRESS ? ButtonAction::Press : ButtonAction::Release;
-			EventHandler::Push(new Event(EventType::Click, static_cast<void*>(eventData)));
+			EventHandler::Add(new Event(EventType::Click, static_cast<void*>(eventData)));
 		}
 		else if (button == GLFW_MOUSE_BUTTON_2)
 		{
@@ -69,7 +69,7 @@ namespace Moon
 			eventData->Position = Vec2(xpos, ypos);
 			eventData->Type = ButtonType::RightButton;
 			eventData->Action = action == GLFW_PRESS ? ButtonAction::Press : ButtonAction::Release;
-			EventHandler::Push(new Event(EventType::Click, static_cast<void*>(eventData)));
+			EventHandler::Add(new Event(EventType::Click, static_cast<void*>(eventData)));
 		}
 	}
 
@@ -115,7 +115,7 @@ namespace Moon
 		glfwPollEvents();
 		if (glfwWindowShouldClose(s_Window))
 		{
-			EventHandler::Push(new Event(EventType::WindowClose, (EventData)nullptr));
+			EventHandler::Add(new Event(EventType::WindowClose, (EventData)nullptr));
 			return;
 		}
 	}
@@ -140,16 +140,30 @@ namespace Moon
 	{
 		GLFWcursor* cursor = nullptr;
 		
-		switch (ct)
+		if (ct == CursorType::Hidden)
+			glfwSetInputMode(s_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		else
 		{
-		case CursorType::Pointer:
-			cursor = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
-			break;
-		case CursorType::Normal:
-			cursor = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-			break;
+			glfwSetInputMode(s_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			switch (ct)
+			{
+			case CursorType::Pointer:
+				cursor = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+				break;
+			case CursorType::Hidden:
+				glfwSetInputMode(s_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+				break;
+			case CursorType::Normal:
+				cursor = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+				break;
+			}
 		}
 
 		glfwSetCursor(s_Window, cursor);
+	}
+
+	void Window::SetCursorPos(Vec2 pos)
+	{
+		glfwSetCursorPos(s_Window, pos.x, pos.y);
 	}
 }

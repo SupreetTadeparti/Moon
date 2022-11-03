@@ -8,9 +8,11 @@ namespace Moon
 	{
 	public:
 		static const LongDouble PI;
+		MOON_API static Double Radians(Double degrees);
+		MOON_API static Double Degrees(Double radians);
 		template <typename T>
-		static MOON_API Mat4 Perspective(T fov, T aspect, T zNear, T zFar);
+		MOON_API static Mat4 Perspective(T fov, T aspect, T zNear, T zFar);
 		template <typename T>
-		static MOON_API Mat4 Ortho(T left, T right, T bottom, T top, T zNear, T zfar);
+		MOON_API static Mat4 Ortho(T left, T right, T bottom, T top, T zNear, T zfar);
 	};
 }

@@ -16,6 +16,7 @@ namespace Moon
         return 0;
 	}
 
+    // Inspired by https://learnopengl.com/In-Practice/Text-Rendering
 	Int Text::InitFont(Font font)
 	{
 		FT_Face face;
@@ -88,7 +89,7 @@ namespace Moon
             InitFont(font);
 		}
 
-        Model* model = Models::Rect(Shader::GenerateDefaultText(), 30.0f, 30.0f);
+        Model* model = new Model(Shape::Rect);
 
         for (const Char& c : text)
         {
@@ -100,7 +101,7 @@ namespace Moon
             Float w = ch.Size.x;
             Float h = ch.Size.y;
 
-            Entity* entity = new Entity(model, Vec3(xpos, ypos, 0), Vec3(), Vec3(1, -1, 1));
+            Entity* entity = new Entity(model, Vec3(xpos, ypos, -1), Vec3(), Vec3(1, -1, 1));
             entity->SetMaterial(new Material(new Texture(ch.TextureID)));
             m_Characters.push_back(entity);
 

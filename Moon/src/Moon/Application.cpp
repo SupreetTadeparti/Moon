@@ -30,11 +30,13 @@ namespace Moon
 
 		MoonLogInfo("Running");
 
+		Uint prevTime = Util::Time::CurrentTime(Util::TimeUnit::Millisecond);
+		Uint frames = 0;
+
 		while (running)
 		{
 			OnUpdate();
 			Renderer::Update();
-			Renderer::GetScene()->Update();
 			Renderer::Prepare();
 			Renderer::Render();
 			EventHandler::Update();
@@ -73,6 +75,16 @@ namespace Moon
 				}
 				EventHandler::Pop();
 			}
+
+			Uint currTime = Util::Time::CurrentTime(Util::TimeUnit::Millisecond);
+			frames++;
+
+			if (currTime - prevTime >= 1000U)
+			{
+				m_Frames = frames;
+				frames = 0;
+				prevTime = currTime;
+			}
 		}
 
 		Window::Close();
@@ -80,6 +92,6 @@ namespace Moon
 
 	void Application::Close()
 	{
-		EventHandler::Push(new Event(EventType::WindowClose, nullptr));
+		EventHandler::Add(new Event(EventType::WindowClose, nullptr));
 	}
 }

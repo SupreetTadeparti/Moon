@@ -16,7 +16,7 @@ namespace Moon
 	class MOON_API ModelLoader
 	{
 	public:
-		static Model* LoadModel(Shader* shader, Material* material, const String& file);
+		static Model* LoadModel(const String& file, Material* material=Material::GetDefault(), Shader* shader = Shader::GetDefault());
 		static VertexData LoadOBJ(const String& path);
 	private:
 		static List<String> SplitString(const String& string, Char delimeter);

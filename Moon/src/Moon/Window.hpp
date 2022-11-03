@@ -6,7 +6,7 @@ namespace Moon
 {
 	enum class CursorType
 	{
-		Normal, Pointer
+		Normal, Hidden, Pointer
 	};
 
 	enum class ButtonType
@@ -37,14 +37,16 @@ namespace Moon
 		MOON_API static inline Uint GetWidth() { return s_Width; }
 		MOON_API static inline Uint GetHeight() { return s_Height; }
 
-		//   -------------------------------------
-		//   |  To be used by Moon Applications  |
-		//   -------------------------------------
+		MOON_API static void SetCursorType(CursorType);
+		MOON_API static void SetCursorPos(Vec2 cursorPos);
+
+		//  -------------------------------------
+		//  |  To be used by Moon Applications  |
+		//  -------------------------------------
 
 		MOON_API static void SetBackgroundColor(Float r, Float g, Float b);
 		MOON_API static void SetTitle(const String& title);
 		MOON_API static void SetDimensions(Uint width, Uint height);
-		MOON_API static void SetCursorType(CursorType);
 	private:
 		MOON_API static const Char* Window::GetKeyName(Int key);
 		MOON_API static void KeyCallback(GLFWwindow*, Int, Int, Int, Int);

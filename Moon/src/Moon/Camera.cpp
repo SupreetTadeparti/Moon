@@ -2,12 +2,25 @@
 
 namespace Moon
 {
-	Camera::Camera() : m_TranslationMatrix(1.0f), m_RotationMatrix(1.0f), m_ViewMatrix(1.0f), m_Rotation(0.0f)
+	Camera::Camera() : m_TranslationMatrix(1.0f), m_RotationMatrix(1.0f), m_ViewMatrix(1.0f), m_Rotation(0.0f), m_Position(0.0f)
 	{
+	}
+
+	void Camera::SetPosition(Vec3 position)
+	{
+		m_Position = Vec3();
+		Move(position);
+	}
+
+	void Camera::SetRotation(Vec3 rotation)
+	{
+		m_Rotation = Vec3();
+		Rotate(rotation);
 	}
 
 	void Camera::Move(Vec3 translation)
 	{
+		m_Position += translation;
 		m_TranslationMatrix = glm::translate(m_TranslationMatrix, -translation);
 		UpdateViewMatrix();
 	}

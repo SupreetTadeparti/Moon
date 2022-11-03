@@ -37,18 +37,25 @@ namespace Moon
 		Vec4 m_Color;
 	};
 
-	class MOON_API Material
+	class Material
 	{
 	public:
-		Material(Texture* texture);
-		Material(Color* color);
+		MOON_API Material(Texture* texture);
+		MOON_API Material(Color* color);
 
-		inline Texture* GetTexture() const { return m_Texture; }
-		inline Color* GetColor() const { return m_Color; }
-		inline MaterialType GetMaterialType() const { return m_MaterialType; }
+		MOON_API inline Texture* GetTexture() const { return m_Texture; }
+		MOON_API inline Color* GetColor() const { return m_Color; }
+		MOON_API inline MaterialType GetMaterialType() const { return m_MaterialType; }
+
+		MOON_API static Material* GetDefault();
 	private:
+		static void GenerateDefault();
+
 		MaterialType m_MaterialType;
 		Texture* m_Texture;
 		Color* m_Color;
+
+		static Material* s_DefaultMaterial;
+		static const Vec4 s_DefaultColor;
 	};
 }

@@ -20,6 +20,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 #include <unordered_map>
 #include <map>
 #include <sstream>
@@ -53,6 +54,7 @@ typedef glm::mat3 Mat3;
 typedef glm::mat4 Mat4;
 
 #define List std::vector
+#define Set std::set
 #define Pair std::pair
 #define SortedMap std::map
 #define HashMap std::unordered_map
