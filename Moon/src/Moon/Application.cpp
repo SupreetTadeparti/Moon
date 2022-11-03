@@ -28,6 +28,11 @@ namespace Moon
 
 		OnStart();
 
+		if (Renderer::GetScene() == nullptr) {
+			MoonLogCritical("Scene Has Not Been Set!");
+			return;
+		}
+
 		MoonLogInfo("Running");
 
 		Uint prevTime = Util::Time::CurrentTime(Util::TimeUnit::Millisecond);

@@ -52,6 +52,8 @@ namespace Moon
 	{
 		std::ifstream objfile("./src/models/" + path);
 
+		if (objfile.fail()) MoonLogCritical("Failed to Load Model " + path);
+
 		String line;
 
 		List<Vec2> t;
