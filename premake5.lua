@@ -7,6 +7,8 @@ workspace "Moon"
 		"Release",
 	}
 
+	startproject "Sandbox"
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Moon"

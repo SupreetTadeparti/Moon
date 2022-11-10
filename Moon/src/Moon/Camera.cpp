@@ -25,11 +25,6 @@ namespace Moon
 		UpdateViewMatrix();
 	}
 
-	void Camera::Move(Double x, Double y, Double z)
-	{
-		Move(Vec3(x, y, z));
-	}
-
 	void Camera::Rotate(Vec3 rotation)
 	{
 		m_Rotation.x = (float)std::max(std::min((long double)(m_Rotation.x + rotation.x), Math::PI / 2), -Math::PI / 2);
@@ -40,13 +35,9 @@ namespace Moon
 		UpdateViewMatrix();
 	}
 
-	void Camera::Rotate(Double x, Double y, Double z)
-	{
-		Rotate(Vec3(x, y, z));
-	}
-
 	void Camera::UpdateViewMatrix()
 	{
 		m_ViewMatrix = m_RotationMatrix * m_TranslationMatrix;
+		m_Modified = true;
 	}
 }

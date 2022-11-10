@@ -2,8 +2,9 @@
 
 namespace Moon
 {
-	FirstPersonCamera::FirstPersonCamera(Camera* camera, Double speed, Bool locked, Bool click) : m_Camera(camera), m_Click(click), m_Speed(speed)
+	FirstPersonCamera::FirstPersonCamera(Camera* camera, Double speed, Bool locked, Bool click) : m_Click(click), m_Speed(speed)
 	{
+		SetCamera(camera);
 		Window::SetCursorType(CursorType::Hidden);
 		OnMouseMove([camera](Vec2 pos) 
 			{

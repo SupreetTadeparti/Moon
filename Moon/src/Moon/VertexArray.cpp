@@ -2,10 +2,6 @@
 
 namespace Moon
 {
-	VertexArray* VertexArray::s_RectVertexArray = nullptr;
-	VertexArray* VertexArray::s_BoxVertexArray = nullptr;
-	VertexArray* VertexArray::s_SphereVertexArray = nullptr;
-
 	VertexArray::VertexArray() : m_IndexBuffer(nullptr)
 	{
 		glGenVertexArrays(1, &m_VertexArrayID);
@@ -24,21 +20,21 @@ namespace Moon
 		Int size = vbo->GetSize();
 		Int stride = vbo->GetStride();
 		Int64 pointer = vbo->GetPointer();
+		AttributeAdvanceRate rate = vbo->GetAdvanceRate();
 		glVertexAttribPointer(location, size, GL_FLOAT, GL_FALSE, stride, (void*)pointer);
 		glEnableVertexAttribArray(location);
+		if (rate == AttributeAdvanceRate::Shape) glVertexAttribDivisor(location, 1);
 		vbo->GetBuffer()->Unbind();
 		Unbind();
 	}
 
-	void VertexArray::Render()
+	void VertexArray::Render(Int count) const
 	{
-		glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
+		glDrawElementsInstanced(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, 0, count);
 	}
 
 	VertexArray* VertexArray::DefaultRect()
 	{
-		if (s_RectVertexArray != nullptr) return s_RectVertexArray;
-
 		Float vertices[] = {
 			// Positions
 			-0.5, -0.5,
@@ -71,15 +67,12 @@ namespace Moon
 		vao->AddVBO(tvbo);
 		vao->SetIBO(ibo);
 
-		s_RectVertexArray = vao;
-
-		return s_RectVertexArray;
+		return vao;
 	}
 
 	VertexArray* VertexArray::DefaultBox()
 	{
-		if (s_BoxVertexArray != nullptr) return s_BoxVertexArray;
-
+		//if (s_BoxVertexArray != nullptr) return s_BoxVertexArray;
 
 		/*
 			Vertices Group Order :-
@@ -156,7 +149,6 @@ namespace Moon
 			23, 21, 22
 		};
 
-
 		Buffer* buffer = new Buffer(vertices, sizeof(vertices) / sizeof(Float));
 
 		IndexBuffer* ibo = new IndexBuffer(indices, sizeof(indices) / sizeof(Uint));
@@ -172,22 +164,18 @@ namespace Moon
 		vao->AddVBO(nvbo);
 		vao->SetIBO(ibo);
 
-		s_BoxVertexArray = vao;
-
-		return s_BoxVertexArray;
+		return vao;
 	}
 
 	VertexArray* VertexArray::DefaultSphere()
 	{
-		if (s_SphereVertexArray != nullptr) return s_SphereVertexArray;
-
 		List<Float> positions;
 		List<Float> texCoords;
 		List<Float> normals;
 		List<Uint> indices;
 		Float radius = 1.0f;
-		Int stackCount = 30;
-		Int sectorCount = 30;
+		Int stackCount = 10;
+		Int sectorCount = 10;
 		LongDouble sectorStep = 2 * Math::PI / sectorCount;
 		LongDouble stackStep = Math::PI / stackCount;
 		Float lengthInv = 1.0f / radius;
@@ -274,9 +262,7 @@ namespace Moon
 		vao->AddVBO(nvbo);
 		vao->SetIBO(ibo);
 
-		s_SphereVertexArray = vao;
-
-		return s_SphereVertexArray;
+		return vao;
 	}
 
 	VertexArray* VertexArray::Default(Shape shape)

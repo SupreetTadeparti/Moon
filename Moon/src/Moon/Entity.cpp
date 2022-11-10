@@ -2,9 +2,8 @@
 
 namespace Moon
 {
-	Entity::Entity(Model* model, Vec3 translation, Vec3 rotation, Vec3 scale) : m_Model(model), m_Translation(translation), m_Rotation(rotation), m_Scale(scale), m_Fixed(false)
+	Entity::Entity(Model* model, Vec3 translation, Vec3 rotation, Vec3 scale) : m_Model(model), m_Translation(translation), m_Rotation(rotation), m_Scale(scale), m_Modified(false)
 	{
-		m_Material = m_Model->GetMaterial();
 		m_TranslationMatrix = glm::translate(Mat4(1.0f), m_Translation);
 		m_RotationMatrix = glm::rotate(Mat4(1.0f), m_Rotation[0], Vec3(1, 0, 0)) *
 			glm::rotate(Mat4(1.0f), m_Rotation[1], Vec3(0, 1, 0)) *
@@ -13,9 +12,8 @@ namespace Moon
 		UpdateModelMatrix();
 	}
 
-	Entity::Entity(Sprite* sprite, Vec3 translation, Vec3 rotation, Vec3 scale) : m_Model(sprite->GetModel()), m_Translation(translation), m_Rotation(rotation), m_Scale(scale), m_Fixed(false)
+	Entity::Entity(Sprite* sprite, Vec3 translation, Vec3 rotation, Vec3 scale) : m_Model(sprite->GetModel()), m_Translation(translation), m_Rotation(rotation), m_Scale(scale)
 	{
-		m_Material = m_Model->GetMaterial();
 		UpdateModelMatrix();
 	}
 
@@ -40,6 +38,8 @@ namespace Moon
 	void Entity::UpdateModelMatrix()
 	{
 		m_ModelMatrix = m_TranslationMatrix * m_RotationMatrix * m_ScaleMatrix;
+		m_Model->SetModified(true);
+		m_Modified = true;
 	}
 
 	void Entity::UpdateTranslationMatrix()

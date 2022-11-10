@@ -103,25 +103,25 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Moon\RigidBody.hpp" />
-    <ClInclude Include="src\Moon\CameraController.hpp" />
-    <ClInclude Include="src\Moon\Light.hpp" />
     <ClInclude Include="src\Moon.h" />
     <ClInclude Include="src\Moon\Application.hpp" />
     <ClInclude Include="src\Moon\Audio.hpp" />
     <ClInclude Include="src\Moon\Buffer.hpp" />
     <ClInclude Include="src\Moon\Camera.hpp" />
+    <ClInclude Include="src\Moon\CameraController.hpp" />
     <ClInclude Include="src\Moon\Core.h" />
     <ClInclude Include="src\Moon\Entity.hpp" />
     <ClInclude Include="src\Moon\EntryPoint.h" />
     <ClInclude Include="src\Moon\Event.hpp" />
     <ClInclude Include="src\Moon\EventController.hpp" />
+    <ClInclude Include="src\Moon\Light.hpp" />
     <ClInclude Include="src\Moon\Logger.hpp" />
     <ClInclude Include="src\Moon\Material.hpp" />
     <ClInclude Include="src\Moon\Math.hpp" />
     <ClInclude Include="src\Moon\Model.hpp" />
     <ClInclude Include="src\Moon\ModelLoader.hpp" />
     <ClInclude Include="src\Moon\Renderer.hpp" />
+    <ClInclude Include="src\Moon\RigidBody.hpp" />
     <ClInclude Include="src\Moon\Scene.hpp" />
     <ClInclude Include="src\Moon\Shader.hpp" />
     <ClInclude Include="src\Moon\Sprite.hpp" />
@@ -131,22 +131,22 @@
     <ClInclude Include="src\Moon\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Moon\RigidBody.cpp" />
-    <ClCompile Include="src\Moon\CameraController.cpp" />
-    <ClCompile Include="src\Moon\Light.cpp" />
     <ClCompile Include="src\Moon\Application.cpp" />
     <ClCompile Include="src\Moon\Audio.cpp" />
     <ClCompile Include="src\Moon\Buffer.cpp" />
     <ClCompile Include="src\Moon\Camera.cpp" />
+    <ClCompile Include="src\Moon\CameraController.cpp" />
     <ClCompile Include="src\Moon\Entity.cpp" />
     <ClCompile Include="src\Moon\Event.cpp" />
     <ClCompile Include="src\Moon\EventController.cpp" />
+    <ClCompile Include="src\Moon\Light.cpp" />
     <ClCompile Include="src\Moon\Logger.cpp" />
     <ClCompile Include="src\Moon\Material.cpp" />
     <ClCompile Include="src\Moon\Math.cpp" />
     <ClCompile Include="src\Moon\Model.cpp" />
     <ClCompile Include="src\Moon\ModelLoader.cpp" />
     <ClCompile Include="src\Moon\Renderer.cpp" />
+    <ClCompile Include="src\Moon\RigidBody.cpp" />
     <ClCompile Include="src\Moon\Scene.cpp" />
     <ClCompile Include="src\Moon\Shader.cpp" />
     <ClCompile Include="src\Moon\Sprite.cpp" />

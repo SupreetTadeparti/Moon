@@ -25,13 +25,17 @@ uniform sampler2D u_Texture;
 void main()
 {
 	vec4 fragColor = u_FragmentType == 1 ? u_Color : texture(u_Texture, v_TextureCoord);
+
 	if (fragColor.a < 0.1) discard;
+
 	vec3 color = vec3(0.0f);
+
 	if (u_AmbientLightActivated)
 	{
 		vec3 ambient = u_AmbientLightBrightness * u_AmbientLightColor;
 		color += ambient;
 	}
+
 	if (u_DirectionalLightActivated)
 	{
 		vec3 normal = normalize(v_Normal);
@@ -39,6 +43,8 @@ void main()
 		vec3 diffuse = max(dot(normal, lightDirection), 0.0) * u_DirectionalLightColor;
 		color += diffuse;
 	}
-	color = max(color, 1.0f);
+
+	// color = max(color, 1.0f);
+
 	o_Color = vec4(color * fragColor.rgb, fragColor.a);
 }

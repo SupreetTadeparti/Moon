@@ -8,6 +8,11 @@ namespace Moon
 {
 	class CameraController : public CallbackEventController
 	{
+	public:
+		MOON_API inline Camera* GetCamera() { return m_Camera; }
+		MOON_API inline void SetCamera(Camera* camera) { m_Camera = camera; }
+	protected:
+		Camera* m_Camera;
 	};
 
 	class FirstPersonCamera : public CameraController
@@ -15,10 +20,8 @@ namespace Moon
 	public:
 		MOON_API FirstPersonCamera(Camera* camera, Double speed=0.02, Bool locked=false, Bool click=false);
 		MOON_API inline void SetSpeed(Double speed) { m_Speed = speed; }
-		MOON_API inline Camera* GetCamera() { return m_Camera; }
 		MOON_API inline Double GetSpeed() { return m_Speed; }
 	private:
-		Camera* m_Camera;
 		Double m_Speed;
 		Bool m_Click;
 	};

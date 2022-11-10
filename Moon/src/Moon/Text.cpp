@@ -102,7 +102,7 @@ namespace Moon
             Float h = ch.Size.y;
 
             Entity* entity = new Entity(model, Vec3(xpos, ypos, -1), Vec3(), Vec3(1, -1, 1));
-            entity->SetMaterial(new Material(new Texture(ch.TextureID)));
+            //entity->SetMaterial(new Material(new Texture(ch.TextureID)));
             m_Characters.push_back(entity);
 
             x += ch.Advance >> 6;

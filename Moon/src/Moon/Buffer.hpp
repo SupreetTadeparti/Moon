@@ -4,11 +4,21 @@
 
 namespace Moon
 {
+	enum class MOON_API AttributeAdvanceRate
+	{
+		Vertex,
+		Shape
+	};
+
 	class Buffer
 	{
 	public:
 		template <typename T>
 		MOON_API Buffer(T* data, Uint count);
+		template <typename T>
+		MOON_API void SetData(T* data, Uint count);
+		template <typename T>
+		MOON_API void UpdateData(T* data, Uint idx);
 		MOON_API inline void Bind() const { glBindBuffer(GL_ARRAY_BUFFER, m_BufferID); };
 		MOON_API inline void Unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); };
 		MOON_API inline Uint GetID() const { return m_BufferID; };
@@ -33,7 +43,7 @@ namespace Moon
 	class MOON_API VertexBuffer
 	{
 	public:
-		VertexBuffer(int location, int size, int stride, int pointer, Buffer* buffer);
+		VertexBuffer(int location, int size, int stride, int pointer, Buffer* buffer, AttributeAdvanceRate rate = AttributeAdvanceRate::Vertex);
 
 		// Getters
 		inline Int GetLocation() const { return m_Location; };
@@ -41,11 +51,13 @@ namespace Moon
 		inline Int GetStride() const { return m_Stride; };
 		inline Int GetPointer() const { return m_Pointer; };
 		inline Buffer* GetBuffer() const { return m_Buffer; };
+		inline AttributeAdvanceRate GetAdvanceRate() const { return m_AdvanceRate; }
 	private:
 		Int m_Location;
 		Int m_Size;
 		Int m_Stride;
 		Int m_Pointer;
 		Buffer* m_Buffer;
+		AttributeAdvanceRate m_AdvanceRate;
 	};
 }

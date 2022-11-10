@@ -14,9 +14,8 @@ namespace Moon
 		MOON_API void Move(Vec3 translation);
 		MOON_API void Rotate(Vec3 rotation);
 		MOON_API void Scale(Vec3 scale);
-		MOON_API inline void SetMaterial(Material* material) { m_Material = material; };
-		MOON_API inline void SetFixed(Bool fixed) { m_Fixed = fixed; }
-		MOON_API inline Bool GetFixed() { return m_Fixed; }
+		MOON_API inline Bool GetModified() const { return m_Modified; }
+		MOON_API inline void SetModified(Bool modified) { m_Modified = modified; }
 		MOON_API inline Vec3 GetPosition() const { return m_Translation; }
 		MOON_API inline void SetPosition(Vec3 position) { m_Translation = position; UpdateTranslationMatrix(); }
 		MOON_API inline Vec3 GetRotation() const { return m_Rotation; }
@@ -29,22 +28,16 @@ namespace Moon
 		MOON_API inline void SetTranslationMatrix(Mat4 mat) { m_TranslationMatrix = mat; }
 		MOON_API inline Mat4 GetRotationMatrix() const { return m_RotationMatrix; }
 		MOON_API inline void SetRotationMatrix(Mat4 mat) { m_RotationMatrix = mat; }
-		MOON_API inline Material* const GetMaterial() const { return m_Material; }
-		MOON_API inline Model* const GetModel() const { return m_Model; }
-		MOON_API inline Bool GetTransparency() const 
-		{
-			return m_Material->GetMaterialType() == MaterialType::Color ? m_Material->GetColor()->GetColor().a < 1 : false;
-		};
+		MOON_API inline Model* GetModel() const { return m_Model; }
 	private:
 		void UpdateModelMatrix();
 		void UpdateTranslationMatrix();
 		void UpdateRotationMatrix();
 		void UpdateScaleMatrix();
+		Bool m_Modified;
 		Vec3 m_Translation;
 		Vec3 m_Rotation;
 		Vec3 m_Scale;
-		Bool m_Fixed;
-		Material* m_Material;
 		Model* m_Model;
 		Mat4 m_TranslationMatrix;
 		Mat4 m_RotationMatrix;
