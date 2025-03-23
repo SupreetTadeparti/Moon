@@ -8,10 +8,22 @@
 
 namespace Moon
 {
+	/* Draw Elements Indirect Command */
+	/* Each RenderModel is associated with a model/geometry with which and entity is tring to be rendered with */
+	struct RenderModel
+	{
+		Uint Count;			// Number of indices in geometry
+		Uint InstanceCount; // Number of instances of model to be rendered
+		Uint FirstIndex;	// Number of indices rendered prior to this model
+		Uint BaseVertex;	// Number of vertices (non-repetitive) rendered prior to this model
+		Uint BaseInstance;	// Number of instances rendered prior to this model
+	};
+
 	class Scene : public CallbackEventController
 	{
 	public:
 		MOON_API Scene();
+		MOON_API void Render();
 		MOON_API void UpdateModels();
 		MOON_API void AddEntity(Entity* entity);
 		MOON_API void AddText(Text* entity);
@@ -25,19 +37,26 @@ namespace Moon
 		MOON_API inline SpotLight* GetSpotLight() const { return m_SpotLight; };
 		MOON_API inline void SetCamera(Camera* camera) { m_Camera = camera; }
 		MOON_API inline Camera* GetCamera() const { return m_Camera; }
-		MOON_API inline HashMap<Model*, Pair<List<Entity*>, List<Mat4>>> GetEntities() const { return m_Entities; }
-		MOON_API inline Set<Model*> GetModels() const { return m_Models; }
+		MOON_API inline List<Entity*>& GetEntities() { return m_Entities; }
+		MOON_API inline List<Model*>& GetModels() { return m_Models; }
 	private:
-		MOON_API void CreateTransformationBuffers(Model* model, List<Mat4>* transformations);
-		MOON_API void UpdateTransformationBuffers(Model* model, List<Entity*>* entities);
+		VertexArray* m_VertexArray;
+		Bool m_BufferModified;
+		Bool m_First; // First time rendering flag for setting up vertex arrays/buffers
+		Uint m_FirstIndex; // Total number of indices to be rendered
+		Uint m_BaseVertex; // Total number of vertices to be rendered
+		Uint m_BaseInstance; // Total number of instances to be rendered
+		Buffer* m_IndirectBuffer; // Stores m_Indirect data in buffer format
+		Buffer* m_TransformationBuffer; // Stores m_Transformations data in buffer format
 		Camera* m_Camera;
+		Shader* m_Shader;
 		AmbientLight* m_AmbientLight;
 		DirectionalLight* m_DirectionalLight;
-		HashMap<Model*, Buffer*> m_Buffers;
 		SpotLight* m_SpotLight;
-		Set<Model*> m_Models;
-		Set<Model*> m_ModifiedModels;
-		Set<Model*> m_TranslucentModels;
-		HashMap<Model*, Pair<List<Entity*>, List<Mat4>>> m_Entities;
+		List<Model*> m_Models;
+		List<Entity*> m_Entities;
+		List<Mat4> m_Transformations;
+		HashMap<Model*, Int> m_IndirectIndices; // Maps models to their index in m_Indirect
+		List<RenderModel> m_Indirect;
 	};
 }

@@ -84,25 +84,32 @@ namespace Moon
 	Text::Text(Int64 x, Int64 y, const String& text, const String& fontName, Uint fontSize)
 	{
         Font font = { fontName, fontSize };
+        
         if (s_Fonts.find(font) == s_Fonts.end())
 		{
             InitFont(font);
 		}
 
-        Model* model = new Model(Shape::Rect);
+        Mat4 orthoProjMat = Math::Ortho(0.f, 1280.f, 720.f, 0.f);
 
         for (const Char& c : text)
         {
             Character ch = s_Fonts[font][c];
 
             Float xpos = x + ch.Bearing.x;
-            Float ypos = y - (ch.Size.y - ch.Bearing.y);
+            Float ypos = y + (ch.Size.y - ch.Bearing.y);
 
             Float w = ch.Size.x;
             Float h = ch.Size.y;
 
-            Entity* entity = new Entity(model, Vec3(xpos, ypos, -1), Vec3(), Vec3(1, -1, 1));
-            //entity->SetMaterial(new Material(new Texture(ch.TextureID)));
+            Model* model = new Model(new Geometry(GeometryType::Rect));
+            model->SetFixed(true);
+            model->GetShader()->SetProjection(orthoProjMat);
+            model->GetShader()->SetUniformInt("u_Text", 1);
+
+            model->SetMaterial(new Material(new Texture(ch.TextureID)));
+
+            Entity* entity = new Entity(model, Vec3(xpos, ypos, 0), Vec3(), Vec3(w, h, 1));
             m_Characters.push_back(entity);
 
             x += ch.Advance >> 6;

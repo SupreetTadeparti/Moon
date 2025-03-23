@@ -1,8 +1,9 @@
 #include "Entity.hpp"
+#include "Renderer.hpp"
 
 namespace Moon
 {
-	Entity::Entity(Model* model, Vec3 translation, Vec3 rotation, Vec3 scale) : m_Model(model), m_Translation(translation), m_Rotation(rotation), m_Scale(scale), m_Modified(false)
+	Entity::Entity(Model* model, Vec3 translation, Vec3 rotation, Vec3 scale) : m_Model(model), m_Translation(translation), m_Rotation(rotation), m_Scale(scale)
 	{
 		m_TranslationMatrix = glm::translate(Mat4(1.0f), m_Translation);
 		m_RotationMatrix = glm::rotate(Mat4(1.0f), m_Rotation[0], Vec3(1, 0, 0)) *
@@ -38,7 +39,7 @@ namespace Moon
 	void Entity::UpdateModelMatrix()
 	{
 		m_ModelMatrix = m_TranslationMatrix * m_RotationMatrix * m_ScaleMatrix;
-		m_Model->SetModified(true);
+		Renderer::SetModified(true);
 		m_Modified = true;
 	}
 

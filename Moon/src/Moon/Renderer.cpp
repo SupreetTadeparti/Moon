@@ -2,21 +2,21 @@
 
 namespace Moon
 {
-	Scene* Renderer::s_Scene = nullptr;
-	Double Renderer::s_FOV = 70.0f;
-	RenderType Renderer::s_RenderType = RenderType::ThreeD;
+	Scene* Renderer::s_Scene(nullptr);
+	Double Renderer::s_FOV(70.0f);
+	RenderType Renderer::s_RenderType(RenderType::ThreeD);
 	Vec3 Renderer::s_BackgroundColor(0.7f);
 	Bool Renderer::s_Wireframe(false);
+	Bool Renderer::s_Modified(false);
 
 	void Renderer::Update()
 	{
 		s_Scene->Update();
-		s_Scene->UpdateModels();
-	}
-
-	void Renderer::SetScene(Scene* scene)
-	{
-		s_Scene = scene;
+		if (s_Modified)
+		{
+			s_Scene->UpdateModels();
+			s_Modified = false;
+		}
 	}
 
 	void Renderer::ToggleWireframe()
@@ -36,47 +36,6 @@ namespace Moon
 
 	void Renderer::Render()
 	{
-		for (Model* model : s_Scene->GetModels())
-		{
-			model->GetVertexArray()->Bind();
-			model->GetVertexArray()->GetIndexBuffer()->Bind();
-			model->GetShader()->Bind();
-			if (s_Scene->GetCamera() != nullptr)
-			{
-				model->GetShader()->SetView(s_Scene->GetCamera()->GetViewMatrix());
-			}
-			Material* material = model->GetMaterial();
-			switch (material->GetMaterialType())
-			{
-			case MaterialType::Color:
-				model->GetShader()->SetUniformInt("u_FragmentType", 1);
-				model->GetShader()->SetUniformVec4("u_Color", material->GetColor()->GetColor());
-				break;
-			case MaterialType::Texture:
-				model->GetShader()->SetUniformInt("u_FragmentType", 2);
-				model->GetShader()->SetUniformInt("u_Texture", 0);
-				material->GetTexture()->Bind(0);
-				break;
-			}
-			Bool ambientLight = s_Scene->GetAmbientLight() != nullptr;
-			model->GetShader()->SetUniformInt("u_AmbientLightActivated", ambientLight);
-			if (ambientLight)
-			{
-				model->GetShader()->SetUniformVec3("u_AmbientLightColor", s_Scene->GetAmbientLight()->GetColor() / 255.0f);
-				model->GetShader()->SetUniformFloat("u_AmbientLightBrightness", s_Scene->GetAmbientLight()->GetBrightness());
-			}
-			Bool directionalLight = s_Scene->GetDirectionalLight() != nullptr;
-			model->GetShader()->SetUniformInt("u_DirectionalLightActivated", directionalLight);
-			if (directionalLight)
-			{
-				model->GetShader()->SetUniformVec3("u_DirectionalLightColor", s_Scene->GetDirectionalLight()->GetColor() / 255.0f);
-				model->GetShader()->SetUniformVec3("u_DirectionalLightDirection", s_Scene->GetDirectionalLight()->GetDirection());
-			}
-			model->GetShader()->SetUniformInt("u_Fixed", model->GetFixed());
-			model->Render(s_Scene->GetEntities()[model].first.size());
-			model->GetVertexArray()->Unbind();
-			model->GetVertexArray()->GetIndexBuffer()->Unbind();
-			model->GetShader()->Unbind();
-		}
+		s_Scene->Render();
 	}
 }

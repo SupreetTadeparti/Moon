@@ -12,7 +12,7 @@ namespace Moon
 		MOON_API static Double Degrees(Double radians);
 		template <typename T>
 		MOON_API static Mat4 Perspective(T fov, T aspect, T zNear, T zFar);
-		template <typename T>
-		MOON_API static Mat4 Ortho(T left, T right, T bottom, T top, T zNear, T zfar);
+		template <typename... Args>
+		MOON_API static Mat4 Ortho(Args... args);
 	};
 }

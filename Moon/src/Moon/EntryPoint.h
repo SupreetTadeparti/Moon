@@ -6,8 +6,10 @@ extern Moon::Application* Moon::CreateApplication();
 
 int main(int argc, char** argv)
 {
+	/* Initialize Components */
 	Moon::Logger::Init();
 	Moon::Text::Init();
+	Moon::Geometry::Init();
 
 	if (Moon::Window::Init() == -1)
 	{

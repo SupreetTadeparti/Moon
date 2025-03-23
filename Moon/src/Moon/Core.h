@@ -42,6 +42,7 @@ typedef uint32_t Uint32;
 typedef uint64_t Uint64;
 typedef bool Bool;
 typedef char Char;
+typedef short Short;
 typedef float Float;
 typedef double Double;
 typedef long double LongDouble;

@@ -1,19 +1,16 @@
 #include "Buffer.hpp"
+#include "Scene.hpp"
 
 namespace Moon
 {
-	VertexBuffer::VertexBuffer(int location, int size, int stride, int pointer, Buffer* buffer, AttributeAdvanceRate rate)
+	VertexBuffer::VertexBuffer(Int location, Int size, Int stride, Int pointer, Buffer* buffer, AttributeAdvanceRate rate, Uint divisor, List<Uint> divisors) : 
+		m_Location(location), m_Size(size), m_Stride(stride), m_Pointer(pointer), 
+		m_Buffer(buffer), m_Divisor(divisor), m_Divisors(divisors), m_AdvanceRate(rate)
 	{
-		m_Location = location;
-		m_Size = size;
-		m_Stride = stride;
-		m_Pointer = pointer;
-		m_Buffer = buffer;
-		m_AdvanceRate = rate;
 	}
 
 	template <typename T>
-	MOON_API Buffer::Buffer(T* data, Uint count)
+	MOON_API Buffer::Buffer(T* data, Uint count, BufferType bt) : m_BufferType(bt)
 	{
 		glGenBuffers(1, &m_BufferID);
 		SetData(data, count);
@@ -27,7 +24,7 @@ namespace Moon
 			return;
 		}
 		Bind();
-		glBufferData(GL_ARRAY_BUFFER, count * sizeof(T), data, GL_STATIC_DRAW);
+		glBufferData((Int)m_BufferType, count * sizeof(T), data, GL_STATIC_DRAW);
 		Unbind();
 	}
 
@@ -35,7 +32,7 @@ namespace Moon
 	MOON_API void Buffer::UpdateData(T* data, Uint idx)
 	{
 		Bind();
-		glBufferSubData(GL_ARRAY_BUFFER, idx * sizeof(T), sizeof(T), data);
+		glBufferSubData((Int)m_BufferType, idx * sizeof(T), sizeof(T), data);
 		Unbind();
 	}
 
@@ -48,10 +45,12 @@ namespace Moon
 		Unbind();
 	}
 
-	template MOON_API Buffer::Buffer(Mat4* data, Uint count);
-	template MOON_API Buffer::Buffer(Double* data, Uint count);
-	template MOON_API Buffer::Buffer(Float* data, Uint count);
-	template MOON_API Buffer::Buffer(Int* data, Uint count);
+	template MOON_API Buffer::Buffer(Mat4* data, Uint count, BufferType bt);
+	template MOON_API Buffer::Buffer(Double* data, Uint count, BufferType bt);
+	template MOON_API Buffer::Buffer(Float* data, Uint count, BufferType bt);
+	template MOON_API Buffer::Buffer(Int* data, Uint count, BufferType bt);
+	template MOON_API Buffer::Buffer(Uint* data, Uint count, BufferType bt);
+	template MOON_API Buffer::Buffer(RenderModel* data, Uint count, BufferType bt);
 	template MOON_API void Buffer::SetData(Mat4* data, Uint count);
 	template MOON_API void Buffer::SetData(Double* data, Uint count);
 	template MOON_API void Buffer::SetData(Float* data, Uint count);

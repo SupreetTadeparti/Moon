@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Moon\Geometry.hpp" />
     <ClInclude Include="src\Moon.h" />
     <ClInclude Include="src\Moon\Application.hpp" />
     <ClInclude Include="src\Moon\Audio.hpp" />
@@ -119,7 +120,6 @@
     <ClInclude Include="src\Moon\Material.hpp" />
     <ClInclude Include="src\Moon\Math.hpp" />
     <ClInclude Include="src\Moon\Model.hpp" />
-    <ClInclude Include="src\Moon\ModelLoader.hpp" />
     <ClInclude Include="src\Moon\Renderer.hpp" />
     <ClInclude Include="src\Moon\RigidBody.hpp" />
     <ClInclude Include="src\Moon\Scene.hpp" />
@@ -131,6 +131,7 @@
     <ClInclude Include="src\Moon\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Moon\Geometry.cpp" />
     <ClCompile Include="src\Moon\Application.cpp" />
     <ClCompile Include="src\Moon\Audio.cpp" />
     <ClCompile Include="src\Moon\Buffer.cpp" />
@@ -144,7 +145,6 @@
     <ClCompile Include="src\Moon\Material.cpp" />
     <ClCompile Include="src\Moon\Math.cpp" />
     <ClCompile Include="src\Moon\Model.cpp" />
-    <ClCompile Include="src\Moon\ModelLoader.cpp" />
     <ClCompile Include="src\Moon\Renderer.cpp" />
     <ClCompile Include="src\Moon\RigidBody.cpp" />
     <ClCompile Include="src\Moon\Scene.cpp" />
