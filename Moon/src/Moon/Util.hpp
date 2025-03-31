@@ -20,6 +20,9 @@ namespace Moon
 		template <typename T>
 		MOON_API void Swap(T* a, T* b);
 
+		template <typename T>
+		MOON_API List<T>* ConcatLists(const std::initializer_list<List<T>*>& lists);
+
 		class Time
 		{
 		public:

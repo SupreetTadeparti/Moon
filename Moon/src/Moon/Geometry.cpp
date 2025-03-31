@@ -117,12 +117,12 @@ namespace Moon
 		Float s, t, x, y, z, xy, nx, ny, nz, stackAngle, sectorAngle;
 		for (int i = 0; i <= stackCount; i++)
 		{
-			stackAngle = Math::PI / 2 - i * stackStep;
+			stackAngle = static_cast<float>(Math::PI / 2 - i * stackStep);
 			xy = radius * cosf(stackAngle);
 			z = radius * sinf(stackAngle);
 			for (int j = 0; j <= sectorCount; j++)
 			{
-				sectorAngle = j * sectorStep;
+				sectorAngle = static_cast<float>(j * sectorStep);
 
 				x = xy * cosf(sectorAngle);
 				y = xy * sinf(sectorAngle);
@@ -137,8 +137,8 @@ namespace Moon
 				normals.push_back(ny);
 				normals.push_back(nz);
 
-				s = j / sectorCount;
-				t = i / stackCount;
+				s = static_cast<Float>(j) / sectorCount;
+				t = static_cast<Float>(i) / stackCount;
 				texCoords.push_back(s);
 				texCoords.push_back(t);
 			}

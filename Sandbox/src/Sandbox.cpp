@@ -20,13 +20,17 @@ public:
 
 	void GenRandObjects(Uint instances)
 	{
-		Int r = Util::Random::Range(0, 255);
-		Int g = Util::Random::Range(0, 255);
-		Int b = Util::Random::Range(0, 255);
-		GeometryType gt = (GeometryType)Util::Random::Range(0, 2);
-		Model* model = new Model(new Geometry(gt), new Material(new Color(Vec4(r, g, b, 1))));
+
 		for (Int j = 0; j < instances; j++)
 		{
+			Int r = Util::Random::Range(0, 255);
+			Int g = Util::Random::Range(0, 255);
+			Int b = Util::Random::Range(0, 255);
+
+			GeometryType gt = (GeometryType)Util::Random::Range(0, 2);
+
+			model = new Model(new Geometry(gt), new Material(new Color(Vec4(r, g, b, 1))));
+
 			Int x = Util::Random::Range(-100, 100);
 			Int y = Util::Random::Range(-100, 100);
 			Int z = Util::Random::Range(-100, 100);
@@ -45,7 +49,7 @@ public:
 
 		Camera* camera = new Camera();
 		FirstPersonCamera* fpc = new FirstPersonCamera(camera);
-		fpc->SetSpeed(0.1);
+		fpc->SetSpeed(0.05);
 		scene->SetCameraController(fpc);
 
 		GenRandObjects(100);

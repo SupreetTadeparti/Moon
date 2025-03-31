@@ -14,7 +14,7 @@ namespace Moon
 		s_Scene->Update();
 		if (s_Modified)
 		{
-			s_Scene->UpdateModels();
+			s_Scene->UpdateEntities();
 			s_Modified = false;
 		}
 	}

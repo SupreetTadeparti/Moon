@@ -1,8 +1,8 @@
-#version 330 core
+#version 450 core
 
 in vec2 v_TextureCoord;
 in vec3 v_Normal;
-in vec4 v_Color;
+//in vec4 v_Color;
 //in float v_FragmentType;
 //in sampler2D v_Texture;
 
@@ -21,7 +21,7 @@ uniform bool u_Text;
 void main()
 {
 //	vec4 fragColor = v_FragmentType ? v_Color : texture(v_Texture, v_TextureCoord);
-	vec4 fragColor = v_Color;
+	//vec4 fragColor = v_Color;
 
 //	if (fragColor.a < 0.1) discard;
 //
@@ -29,7 +29,7 @@ void main()
 //		o_Color = vec4(1.0, 1.0, 1.0, fragColor.r);
 //		return;
 //	}
-
+/*
 	float baseBrightness = (!u_AmbientLightActivated && !u_DirectionalLightActivated ? 1.0f : 0.0f);
 	vec3 color = vec3(baseBrightness);
 
@@ -46,10 +46,10 @@ void main()
 		vec3 diffuse = max(dot(normal, lightDirection), 0.0) * u_DirectionalLightColor;
 		color += diffuse;
 	}
-
+*/
 	//o_Color = vec4(color * fragColor.rgb, fragColor.a);
-	o_Color = vec4(clamp(v_Color, 0.0, 1.0).xyz, 1.0);
+	//o_Color = vec4(clamp(v_Color, 0.0, 1.0).xyz, 1.0);
 	//o_Color = v_Color;
 	//o_Color = vec4(fragColor.xyz, 1);
-	//o_Color = vec4(1.0, 0.0, 0.0, 1.0);
+	o_Color = vec4(1.0, 0.0, 0.0, 1.0);
 }

@@ -12,12 +12,12 @@ namespace Moon
 		m_IndirectBuffer = buffer;
 	}
 
-	void VertexArray::SetIBO(IndexBuffer* ibo)
+	void VertexArray::SetIBO(Buffer* ibo)
 	{
 		m_IndexBuffer = ibo;
 	}
 
-	void VertexArray::AddVBO(VertexBuffer* vbo)
+	void VertexArray::SetVBO(VertexBuffer* vbo) const
 	{
 		Bind();
 		vbo->GetBuffer()->Bind();
@@ -35,7 +35,7 @@ namespace Moon
 		if (rate == AttributeAdvanceRate::Custom) glVertexAttribDivisor(location, divisor);
 		if (rate == AttributeAdvanceRate::DynamicCustom)
 		{
-
+			// TODO: Implement dynamic custom attribute advance rate
 		}
 		
 		vbo->GetBuffer()->Unbind();

@@ -36,20 +36,24 @@ namespace Moon
 		Uint m_BufferID;
 	};
 
-	class MOON_API IndexBuffer
-	{
-	public:
-		template <typename T>
-		MOON_API IndexBuffer(T* data, Uint count);
-		inline void Bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferID); };
-		inline void Unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); };
-		inline Uint GetID() const { return m_BufferID; };
-		inline Uint GetCount() const { return m_Count; };
-	private:
-		Uint m_BufferID;
-		Uint m_Count;
-	};
+	// Change this to a child of Buffer with overrided binding methods
+	//class MOON_API IndexBuffer
+	//{
+	//public:
+	//	template <typename T>
+	//	MOON_API IndexBuffer(T* data, Uint count);
+	//	template <typename T>
+	//	MOON_API void SetData(T* data, Uint count);
+	//	inline void Bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferID); };
+	//	inline void Unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); };
+	//	inline Uint GetID() const { return m_BufferID; };
+	//	inline Uint GetCount() const { return m_Count; };
+	//private:
+	//	Uint m_BufferID;
+	//	Uint m_Count;
+	//};
 
+	// TODO: Change to Struct
 	class MOON_API VertexBuffer
 	{
 	public:
@@ -64,6 +68,16 @@ namespace Moon
 		inline List<Uint> GetDivisors() const { return m_Divisors; }
 		inline Buffer* GetBuffer() const { return m_Buffer; }
 		inline AttributeAdvanceRate GetAdvanceRate() const { return m_AdvanceRate; }
+
+		// Setters
+		inline void SetLocation(Int location) { m_Location = location; }
+		inline void SetSize(Int size) { m_Size = size; }
+		inline void SetStride(Int stride) { m_Stride = stride; }
+		inline void SetPointer(Int pointer) { m_Pointer = pointer; }
+		inline void SetDivisor(Uint divisor) { m_Divisor = divisor; }
+		inline void SetDivisors(List<Uint>& divisors) { m_Divisors = divisors; }
+		inline void SetBuffer(Buffer* buffer) { m_Buffer = buffer; }
+		inline void SetAdvanceRate(AttributeAdvanceRate rate) { m_AdvanceRate = rate; }
 	private:
 		Int m_Location;
 		Int m_Size;
@@ -73,5 +87,20 @@ namespace Moon
 		List<Uint> m_Divisors;
 		Buffer* m_Buffer;
 		AttributeAdvanceRate m_AdvanceRate;
+	};
+
+	// Used for indirect rendering
+	class MOON_API ShaderStorageBuffer
+	{
+	public:
+		template <typename T>
+		ShaderStorageBuffer(T* data, Uint count);
+		inline void Bind() const { glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_BufferID); };
+		inline void Unbind() const { glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0); };
+		inline Uint GetID() const { return m_BufferID; };
+		inline Uint GetCount() const { return m_Count; };
+	private:
+		Uint m_BufferID;
+		Uint m_Count;
 	};
 }

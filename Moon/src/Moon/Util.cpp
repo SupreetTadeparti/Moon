@@ -14,6 +14,19 @@ namespace Moon
             *b = temp;
         }
 
+        template<typename T>
+        List<T>* ConcatLists(const std::initializer_list<List<T>*>& lists)
+        {
+            List<T>* res = new List<T>();
+
+			for (const auto& list : lists)
+			{
+				res->insert(res->end(), list->begin(), list->end());
+			}
+
+            return res;
+        }
+
         template <typename T>
         T Random::Choice(List<T> list)
         {
@@ -112,5 +125,7 @@ namespace Moon
         template MOON_API void Swap(Double*, Double*);
         template MOON_API void Swap(Entity*, Entity*);
         template MOON_API void Swap(Mat4*, Mat4*);
+        template List<Uint>* ConcatLists(const std::initializer_list<List<Uint>*>& lists);
+        template List<Float>* ConcatLists(const std::initializer_list<List<Float>*>& lists);
     }
 }
